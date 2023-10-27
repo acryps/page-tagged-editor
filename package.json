@@ -1,0 +1,16 @@
+{
+	"name": "@acryps/page-tagged-editor",
+	"version": "0.0.19",
+	"description": "acryps page tagged editor",
+	"main": "built/index.js",
+	"scripts": {
+		"build": "tsc && page compile",
+		"version": "npm run build"
+	},
+	"peerDependencies": {
+		"@acryps/page": "^1.3.0"
+	},
+	"devDependencies": {
+		"typescript": "^4.6.4"
+	}
+}
