@@ -110,7 +110,7 @@ export class TaggedEditor extends Component {
 				}
 			}
 
-			input.onkeyup = () => {
+			input.onblur = () => {
 				this.source = this.extractValue(input);
 				this.save(this.source);
 			}
