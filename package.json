@@ -1,6 +1,6 @@
 {
 	"name": "@acryps/page-tagged-editor",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "acryps page tagged editor",
 	"main": "built/index.js",
 	"scripts": {
