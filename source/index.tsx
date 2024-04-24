@@ -155,9 +155,29 @@ export class TaggedEditor extends Component {
 
 		return element;
 	}
+	
+	private extractElementContent(element: HTMLElement) {
+		let content = '';
+		
+		for (let child of element.childNodes) {
+			if (child.nodeType == Node.TEXT_NODE) {
+				content += child.textContent;
+			} else if (child.nodeType == Node.ELEMENT_NODE) {
+				const token = (child as HTMLElement).getAttribute('ui-token');
+				
+				if (token) {
+					content += token;
+				} else {
+					content += this.extractElementContent(child as HTMLElement);
+				}
+			}
+		}
+		
+		return content;
+	}
 
 	extractValue(input: HTMLElement) {
-		let content = [...input.childNodes].map(node => node.nodeType == Node.TEXT_NODE ? node.textContent : (node as HTMLElement).getAttribute('ui-token')).join('');
+		let content = this.extractElementContent(input);
 
 		// remove safety characters
 		content = content.replaceAll(this.safetyCharacter, '');
