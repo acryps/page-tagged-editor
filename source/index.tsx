@@ -108,12 +108,22 @@ export class TaggedEditor extends Component {
 						selection.addRange(range);
 					}
 				}
-			}
+			};
 
 			input.onblur = () => {
 				this.source = this.extractValue(input);
 				this.save(this.source);
-			}
+			};
+			
+			// unformat any paste
+			input.onpaste = () => {
+				requestAnimationFrame(() => {
+					this.source = this.extractValue(input);
+					this.save(this.source);
+					
+					this.update();
+				});
+			};
 		});
 
 		return <ui-tagged-editor>
