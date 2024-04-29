@@ -163,6 +163,10 @@ export class TaggedEditor extends Component {
 			if (child.nodeType == Node.TEXT_NODE) {
 				content += child.textContent;
 			} else if (child.nodeType == Node.ELEMENT_NODE) {
+				if (['div', 'br'].includes((child as HTMLElement).tagName.toLowerCase())) {
+					content += '\n';
+				}
+				
 				const token = (child as HTMLElement).getAttribute('ui-token');
 				
 				if (token) {
