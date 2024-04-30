@@ -49,3 +49,31 @@ The `type` argument of a `Tag` will be set as an attribute, which can be used to
 	color: #0f0; 
 }
 ```
+
+`renderTagList`, `renderTag` and `extractValue` may be overwritten by creating a custom subclass
+
+```
+class GroupedTaggedEditor extends TaggedEditor {
+	constructor(
+		private source: string,
+		private groups: Map<string, Tag[]>
+		private save: (value: string) => void
+	) {
+		super(source, [...groups.values()], save);
+	}
+
+	renderTagList() {
+		return <ui-tag-template>
+			{this.groups.entries().map((group, tags) => <ui-group>
+				<ui-name>
+					{group}
+				</ui-name>
+			
+				<ui-tags>
+					{this.renderTag(tag)}
+				</ui-tags>
+			</ui-group>)}
+		</ui-tag-template>
+	}
+}
+```

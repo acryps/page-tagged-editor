@@ -1,4 +1,4 @@
-import { Component } from "@acryps/page";
+import { Component, ComponentContent } from "@acryps/page";
 
 export class Tag {
 	constructor(
@@ -135,13 +135,16 @@ export class TaggedEditor extends Component {
 				return this.renderTag(part);
 			})}</ui-tag-input>}
 
-			<ui-tag-template>
-				{this.tags.map(tag => this.renderTag(tag))}
-			</ui-tag-template>
+			{this.renderTagList()}
 		</ui-tagged-editor>
 	}
 
-	renderTag(tag: Tag) {
+	/**
+		Renders a single tag in the tag list and registers dragging options
+		
+		If overwritten, make sure to make the element draggable and set a text/plain data transfer value containting the template token
+	*/
+	renderTag(tag: Tag): ComponentContent {
 		const element: HTMLElement = <ui-tag ui-type={tag.type} ui-token={tag.templateToken}>
 			{tag.name}
 		</ui-tag>;
@@ -154,6 +157,33 @@ export class TaggedEditor extends Component {
 		});
 
 		return element;
+	}
+	
+	/**
+		Renders the list of available tags
+		Overwrite this method to insert your own elements.
+		
+		By default, this is a <ui-tag-template> element.
+	*/
+	renderTagList(): ComponentContent {
+		return <ui-tag-template>
+			{this.tags.map(tag => this.renderTag(tag))}
+		</ui-tag-template>;
+	}
+	
+	/**
+		Extracts the value of the input field as a string containing all the template strings
+	*/
+	extractValue(input: HTMLElement): string {
+		let content = this.extractElementContent(input);
+
+		// remove safety characters
+		content = content.replaceAll(this.safetyCharacter, '');
+
+		// chrome inserts a non-breaking space when an element is dropped sometimes, just remove it
+		content = content.replaceAll('\u00a0', '');
+
+		return content;
 	}
 	
 	private extractElementContent(element: HTMLElement) {
@@ -177,18 +207,6 @@ export class TaggedEditor extends Component {
 			}
 		}
 		
-		return content;
-	}
-
-	extractValue(input: HTMLElement) {
-		let content = this.extractElementContent(input);
-
-		// remove safety characters
-		content = content.replaceAll(this.safetyCharacter, '');
-
-		// chrome inserts a non-breaking space when an element is dropped sometimes, just remove it
-		content = content.replaceAll('\u00a0', '');
-
 		return content;
 	}
 }
